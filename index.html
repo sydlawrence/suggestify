@@ -72,16 +72,18 @@ function fetchSpotifyTrack(artist,song) {
 
                         var a = $("<a href='"+track.href+"'/>");
                         
-                        a.html(song + " - " + artist);
+                        a.html(artist + " - " + song);
                         // play it on click
                         a.click(function() {
                             playTrack(track);
                             return false;
                         });
 
+                        li.append(a);
+
                     } else {
                         
-                        li.html(song + " - " + artist);
+                        li.html(artist + " - " + song);
 
                         // NOT AVAILABLE show in red
                         li.css('color','#f00')
