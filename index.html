@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suggester</title>
+    <link rel="stylesheet" href="sp://import/css/adam.css">
+    <script type="text/javascript" src="jquery.min.js"></script>
+</head>
+
+<body>
+    <h1> Here's a generated track list from echo nest and the current track</h1>
+    <ul id="results"> </ul>
+
+<script type="text/javascript">
+
+// get the standard spotify api
+sp = getSpotifyApi(1);
+
+// get the track that is currently playing
+function getCurrentlyPlaying() {
+    var playerTrackInfo = sp.trackPlayer.getNowPlayingTrack();
+    
+    // if nothing currently playing
+    if (playerTrackInfo == null) {
+        console.log("No track currently playing");
+    }
+
+    // winner we have a track
+    else {
+        var track = playerTrackInfo.track;
+        var artist = track.artists[0].name;
+
+        // fetch Suggestions
+        fetchSuggestions(artist, 20);
+    }
+}
+
+// play a track in the player
+function playTrack(track) {
+
+    // play the track from it's uri
+    sp.trackPlayer.playTrackFromUri(track.href, {
+        onSuccess: function() { console.log("success");} ,
+        onFailure: function () { console.log("failure");},
+        onComplete: function () { console.log("complete"); }
+    });
+}
+
+// using artist name and song name, find the spotify track
+function fetchSpotifyTrack(artist,song) {
+
+    // base url
+    var url = "http://ws.spotify.com/search/1/track?";
+
+    $.getJSON(url, {
+        q: artist +" "+song
+    },function(data) {
+
+        // spotify may return more than one possible track
+        for (var i= 0; i< data.tracks.length;i++) {
+            var track = data.tracks[i];
+
+            // check that the artist name is the same
+            if (track.artists && track.artists[0].name === artist) {
+                
+                // check that the track name is the same
+                if (track.name === song) {
+                    // create a list element
+                    var li = $("<li/>");
+
+                    // don't forget not all songs are available everywhere
+                    if (checkRegion(track.album)) {
+
+                        var a = $("<a href='"+track.href+"'/>");
+                        
+                        a.html(song + " - " + artist);
+                        // play it on click
+                        a.click(function() {
+                            playTrack(track);
+                            return false;
+                        });
+
+                    } else {
+                        
+                        li.html(song + " - " + artist);
+
+                        // NOT AVAILABLE show in red
+                        li.css('color','#f00')
+                    }
+
+                    // add the list item
+                    $("#results").append(li);
+
+                    // we no longer what to loop
+                    break;
+                }
+            }
+        }
+    });  
+}
+
+// fetch track suggestions from echonest
+function fetchSuggestions(artist, size) {
+    var echoNestAPIKey = "GPQCPTGUIZ43M2FSV";
+    // find similar songs using echonest
+    var url = 'http://developer.echonest.com/api/v4/playlist/basic?api_key='+echoNestAPIKey+'&callback=?';
+
+    // in this demo i will only use artist-radio so that we don't need extra requests.
+    $.getJSON(url, {
+        artist: artist, 
+        format: 'jsonp', 
+        results: size,
+        type: 'artist-radio'
+    }, function(data) {
+        if (data.response && data.response.status.code === 0) {
+            $("#results").empty();
+
+            for (var i = 0; i < data.response.songs.length; i++) {
+                
+                // we now have the echo nest song
+                var song = data.response.songs[i];
+                
+                // fetch spotify tracks from these songs using their metadata api
+                fetchSpotifyTrack(song.artist_name, song.title);
+            }
+        } else {
+            info("failed getting results");
+        }
+    });
+}
+
+
+// check the region of the album, region string or album object
+function checkRegion(str) {
+    if (typeof str === "object") {
+        str = str.availability.territories;
+    }
+    if (str.indexOf(sp.core.country) >= 0 || str === "worldwide") {
+        return true;
+    }
+    return false;
+}
+
+// when the track changes, we need to listen for an event
+sp.trackPlayer.addEventListener("playerStateChanged", function (event) {
+    
+    // if there is actually a song
+    if (event.data.curtrack) {
+        getCurrentlyPlaying();
+    }
+});
+
+// check on start
+getCurrentlyPlaying();
+
+</script>
+</body>
+</html>
