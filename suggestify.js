@@ -49,6 +49,11 @@ function checkRecentPlays(track) {
     return false;
 }
 
+// clear recent tracks
+function clearRecentTracks() {
+    tracksPlayed = {};
+}
+
 // set auto play on or off
 function setAutoPlay(value) {
     if (value === "false") value = false; // localstorage stores false as string
@@ -141,10 +146,6 @@ function renderTrack(track) {
     if (!searching)
         return;
 
-    // only display 10... that's how we roll
-    if (displayCount >= 10)
-        return;
-
     // fade them all in
     $('#results > *').fadeIn();
 
@@ -208,10 +209,10 @@ function fetchSpotifyTrack(artist,song) {
         if (track.type === "track") {
 
             // check that the artist name is the same
-            if (track.artists && track.artists[0].name === artist) {
+            if (track.artists && track.artists[0].name.indexOf(artist) >= 0) {
                 
                 // check that the track name is the same
-                if (track.name === song) {
+                if (track.name.indexOf(song) >= 0) {
 
                     // don't forget not all songs are available everywhere
                     if (checkRegion(track) && !checkRecentPlays(track)) {
