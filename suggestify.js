@@ -262,6 +262,12 @@ function fetchSpotifyTrack(artist,song) {
 // fetch track suggestions from echonest
 function fetchSuggestions(artist, size) {
 
+    // check if app is online
+    if (!navigator.onLine) {
+        setAutoPlay(false);
+        $('#results').html("<div class='error'><h2>Sorry! I can't call the mother ship as you appear to be offline.</h2><p>When you go back online, I can recommend some more songs.</p></div>")
+    }
+
     // find similar songs using echonest
     var url = 'http://developer.echonest.com/api/v4/playlist/basic?api_key='+echoNestAPIKey+'&callback=?';
 
