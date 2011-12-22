@@ -41,18 +41,22 @@ function getCurrentlyPlaying() {
 // play a track in the player
 function playTrack(track) {
 
-    // play the track from it's uri
-    m.player.play(track);
-    return;
-    sp.trackPlayer.playTrackFromUri(track.href, {
-        onSuccess: function() { console.log("success");} ,
-        onFailure: function () { console.log("failure");},
-        onComplete: function () { console.log("complete"); }
-    });
+    // play the track from it's uri, here you can pass the whole track object, but it will switch to album view away from the app
+    m.player.play(track.href);
 }
 
 // using artist name and song name, find the spotify track
 function fetchSpotifyTrack(artist,song) {
+
+    /*
+    // using the future search model
+    var search = new m.Search(artist +" "+song);
+    search.observe(m.EVENT.CHANGE, function(e) {
+        console.log(e);
+        // This fires anytime the contents of the search object changes
+    });
+
+    */
 
     // base url
     var url = "http://ws.spotify.com/search/1/track?";
