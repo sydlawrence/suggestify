@@ -90,6 +90,53 @@ function refresh() {
     getCurrentlyPlaying();
 }
 
+function renderMainTrack(track) {
+    var playing = $('#currentlyPlaying');
+    if (!track) {
+        playing.hide();
+        return;
+    }
+    console.log(track);
+    playing.show();
+    playing.find("a.track").attr('href',track.uri);
+
+    playing.find(".image").css('background','url('+track.album.cover+')');
+    playing.find(".title").html(track.name);
+    playing.find("#popularity").html(track.popularity);
+
+
+    var $star = $("<span class='star'></span>");
+
+    playing.find('#starred').html($star);
+
+    if (track.starred === true) {
+        $star.addClass("yes");
+        $star.html("yes").click(function() {
+            track.starred = false;
+            renderMainTrack(track);
+
+        });
+    } else {
+        $star.addClass("no");
+        $star.html("no").click(function() {
+            track.starred = true;
+            renderMainTrack(track);
+        });
+    }
+
+    // find the artist span
+    var $artist = playing.find(".artist").html("");
+
+    // insert all the artists
+    for (var i = 0; i<track.artists.length;i++) {
+        if (i > 0)
+            $artist.append(", ");
+
+        // link to them all as requested in the docs
+        $artist.append("<a href='"+track.artists[0].uri+"'>"+track.artists[0].name+"</a>")
+
+    }
+}
 
 // get the track that is currently playing
 function getCurrentlyPlaying() {
@@ -101,6 +148,8 @@ function getCurrentlyPlaying() {
     // get the current track from the player
     var currentTrack = m.player.track;
     
+    renderMainTrack(currentTrack.data);
+
     // if nothing currently playing
     if (currentTrack == null) {
 
@@ -265,6 +314,7 @@ function fetchSuggestions(artist, size) {
     // check if app is online
     if (!navigator.onLine) {
         setAutoPlay(false);
+        // WTF? How am I meant to call back to the mother ship
         $('#results').html("<div class='error'><h2>Sorry! I can't call the mother ship as you appear to be offline.</h2><p>When you go back online, I can recommend some more songs.</p></div>")
     }
 
