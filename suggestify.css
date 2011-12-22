@@ -66,7 +66,12 @@
         padding:20px;
         margin:20px;  
         -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .53);
-        height:100px; 
+        height:64px; 
+    }
+
+    #currentlyPlaying dl {
+        margin:0;
+        margin-top:10px;
     }
 
     #currentlyPlaying dt {
@@ -99,8 +104,11 @@
     #currentlyPlaying .image {
         float:left;
         margin-right:20px;
-        height:100px;
-        width:100px;
+        height:64px;
+        width:64px;
+        border-color: #848483 #939391 #9a9a98;
+        background-color: #c1c0be;
+        box-shadow: inset 0 1px 0 rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .53);
     }
 
     #currentlyPlaying .title {
@@ -109,6 +117,8 @@
         font-weight:bold;
         margin-bottom:5px;
     }
+
+
 
     .cover {
         display:block;
