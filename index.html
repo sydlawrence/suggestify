@@ -13,20 +13,24 @@
 <script type="text/javascript">
 
 // get the standard spotify api
-sp = getSpotifyApi(1);
+var sp = getSpotifyApi(1);
+
+// get the spotify models
+var m = sp.require('sp://import/scripts/api/models');
+
 
 // get the track that is currently playing
 function getCurrentlyPlaying() {
-    var playerTrackInfo = sp.trackPlayer.getNowPlayingTrack();
+    var currentTrack = m.player.track;
     
     // if nothing currently playing
-    if (playerTrackInfo == null) {
+    if (currentTrack == null) {
         console.log("No track currently playing");
     }
 
     // winner we have a track
     else {
-        var track = playerTrackInfo.track;
+        var track = currentTrack.data;
         var artist = track.artists[0].name;
 
         // fetch Suggestions
@@ -38,6 +42,8 @@ function getCurrentlyPlaying() {
 function playTrack(track) {
 
     // play the track from it's uri
+    m.player.play(track);
+    return;
     sp.trackPlayer.playTrackFromUri(track.href, {
         onSuccess: function() { console.log("success");} ,
         onFailure: function () { console.log("failure");},
