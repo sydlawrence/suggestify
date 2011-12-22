@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Suggester</title>
+    <title>Suggestify</title>
     <link rel="stylesheet" href="sp://import/css/adam.css">
     <link rel="stylesheet" href="sp://import/css/shared.css">
     <link rel="stylesheet" href="sp://import/css/api.css">
@@ -13,8 +13,9 @@
 <body>
     <ul id="results"> </ul>
 
+<!--
 <button class="button" onclick="refresh()">Refresh</button>
-
+-->
 
 <script type="text/javascript">
 
@@ -74,11 +75,9 @@ function renderTrack(track) {
 
     console.log(track);
     var img =  $("<div class='cover'>"+
-                    "<a href='"+track.album.uri+"'>"+
-                        "<span class='image' style='height:150px;width:150px;background:url("+track.album.cover+")'><span class='play'></span></span>"+
-                    "</a>"+
-                    "<a href='"+track.uri+"' class='player'>"+
-                        "<span class='play'></span>"+
+                    "<a href='"+track.uri+"'>"+
+                        "<span class='image' style='height:150px;width:150px;background:url("+track.album.cover+")'></span>"+
+                        "<span class='player'></span>"+
                     "</a>"+
                         "<span class='title'>"+track.name+"</span>"+
                         "<span class='artist'></span>"+
@@ -86,7 +85,7 @@ function renderTrack(track) {
    
 
     // play it on click
-    img.find(".player").click(function() {
+    img.find("a").click(function() {
         playTrack(track);
         return false;
     });
