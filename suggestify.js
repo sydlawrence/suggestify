@@ -31,8 +31,8 @@ tracker.track("app");
 
 // config global variables... yeah you heard me... global variables... it's how i roll
     
-var echoNestAPIKey = "GPQCPTGUIZ43M2FSV", // replace this key with your own
-    timerThreshold = 2000;  // how long before the end of the track do we skip... this is due to no onended event
+var echoNestAPIKey = "GPQCPTGUIZ43M2FSV",   // replace this key with your own
+    timerThreshold = 2000;                  // how long before the end of the track do we skip... this is due to no onended event
 
 // just some random variables i need throughout the app. that's right... they are global vars, what withit?
 var tracksPlayed = {},      // just so we don't get caught in a loop of playing the same song over and over
@@ -51,7 +51,9 @@ function checkRecentPlays(track) {
 
 // set auto play on or off
 function setAutoPlay(value) {
-    if (value) { // is set to autoplay
+    if (value === "false") value = false; // localstorage stores false as string
+
+    if (value) { // is set to autoplay, 
 
         // track this movement
         tracker.track("app/autoplay/on");
@@ -75,6 +77,7 @@ function setAutoPlay(value) {
 
     // finally set the global var
     autoPlay = value;
+
 }
 
 // simply refresh the list
@@ -148,12 +151,9 @@ function renderTrack(track) {
     // create a list element
     var li = $("<li/>");
 
-    // if first
-    if (displayCount === 1) {
-
-        // @todo turn this into css instead... it shouldn't be here
-        li.append("<span class='first'>Next Track</span>");
-    }
+    // if first list item and autoplay
+    if (displayCount === 0 && autoPlay)
+        li.addClass("first");
 
     // the markup
     var img =  $("<div class='cover'>"+
@@ -343,8 +343,11 @@ function checkLength() {
     // this function may be called numerous times, but we only want one timer
     clearTimeout(checkTimer);
 
+    // calculate the time left
+    var timeLeft = m.player.track.duration - m.player.position
+
     // calculate if we are passed the point of skip to next track
-    if (m.player.track.duration - m.player.position < timerThreshold) {
+    if (timeLeft < timerThreshold) {
 
         // if we are autoplaying
         if (autoPlay) {
@@ -358,14 +361,12 @@ function checkLength() {
     }
 }
 
-
+// set autoplay to what was previously set
+setAutoPlay(window.localStorage['autoPlay']);
 
 // check on start
 getCurrentlyPlaying();
 checkLength();
-
-// set autoplay to what was previously set
-setAutoPlay(window.localStorage['autoPlay']);
 
 // bind click event to autoplay
 $('#autoplay').click(function() {
