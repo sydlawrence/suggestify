@@ -117,8 +117,8 @@
     }
 
     .cover:hover {
-        background:rgba(255,255,255,0.05);
-        box-shadow:#000 0px 0px 5px inset;
+     //   background:rgba(255,255,255,0.05);
+     //   box-shadow:#000 0px 0px 5px inset;
     }
 
     .cover:hover .player {
