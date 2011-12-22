@@ -1,0 +1,129 @@
+/*
+ * Horizontal Together
+ */
+::-webkit-scrollbar-button:horizontal:increment:double-button {
+	background: url("sp://import/img/scrollbars/dark/button-right-together.png");
+	width: 16px;
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:double-button {
+	background: url("sp://import/img/scrollbars/dark/button-left-together.png");
+	width: 22px;
+}
+
+::-webkit-scrollbar-button:horizontal:increment:double-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-right-together-pressed.png");
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:double-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-left-together-pressed.png");
+}
+
+::-webkit-scrollbar-track:horizontal {
+	background:
+		url("sp://import/img/scrollbars/dark/horizontal-track-left.png") no-repeat left,
+		url("sp://import/img/scrollbars/dark/horizontal-track.png");
+}
+
+::-webkit-scrollbar-track-piece:horizontal:start {
+	margin-left: 4px;
+}
+
+::-webkit-scrollbar-track-piece:double-button:horizontal:end {
+	margin-right: -5px;
+}
+
+/*
+ * Horizontal Separate
+ */
+::-webkit-scrollbar-button:horizontal:increment:single-button {
+	background: url("sp://import/img/scrollbars/dark/button-right.png");
+	width: 21px;
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:single-button {
+	background: url("sp://import/img/scrollbars/dark/button-left.png");
+	width: 21px;
+}
+
+::-webkit-scrollbar-button:horizontal:increment:single-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-right-pressed.png");
+}
+
+::-webkit-scrollbar-button:horizontal:decrement:single-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-left-pressed.png");
+}
+
+::-webkit-scrollbar-track-piece:single-button:horizontal:start {
+	background: url("sp://import/img/scrollbars/dark/horizontal-track.png") no-repeat 5px 0px; /* Hack to hide horizontal-track-left. */
+	margin-left: -5px;
+}
+
+::-webkit-scrollbar-track-piece:single-button:horizontal:end {
+	margin-right: -5px;
+}
+
+/*
+ * Vertical Together
+ */
+::-webkit-scrollbar-button:vertical:increment:double-button {
+	background: url("sp://import/img/scrollbars/dark/button-down-together.png");
+	height: 16px;
+}
+
+::-webkit-scrollbar-button:vertical:decrement:double-button {
+	background: url("sp://import/img/scrollbars/dark/button-up-together.png");
+	height: 22px;
+}
+
+::-webkit-scrollbar-button:vertical:increment:double-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-down-together-pressed.png");
+}
+
+::-webkit-scrollbar-button:vertical:decrement:double-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-up-together-pressed.png");
+}
+
+::-webkit-scrollbar-track:vertical {
+	background:
+		url("sp://import/img/scrollbars/dark/vertical-track-top.png") no-repeat top,
+		url("sp://import/img/scrollbars/dark/vertical-track.png");
+}
+
+::-webkit-scrollbar-track-piece:vertical:start {
+	margin-top: 4px;
+}
+
+::-webkit-scrollbar-track-piece:double-button:vertical:end {
+	margin-bottom: -5px;
+}
+
+/*
+ * Vertical Separate
+ */
+::-webkit-scrollbar-button:vertical:increment:single-button {
+	background: url("sp://import/img/scrollbars/dark/button-down.png");
+	height: 21px;
+}
+
+::-webkit-scrollbar-button:vertical:decrement:single-button {
+	background: url("sp://import/img/scrollbars/dark/button-up.png");
+	height: 21px;
+}
+
+::-webkit-scrollbar-button:vertical:increment:single-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-down-pressed.png");
+}
+
+::-webkit-scrollbar-button:vertical:decrement:single-button:active {
+	background: url("sp://import/img/scrollbars/dark/button-up-pressed.png");
+}
+
+::-webkit-scrollbar-track-piece:single-button:vertical:start {
+	background: url("sp://import/img/scrollbars/dark/vertical-track.png") no-repeat 0px 5px; /* Hack to hide vertical-track-top. */
+	margin-top: -5px;
+}
+
+::-webkit-scrollbar-track-piece:single-button:vertical:end {
+	margin-bottom: -5px;
+}

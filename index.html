@@ -3,12 +3,18 @@
 <head>
     <title>Suggester</title>
     <link rel="stylesheet" href="sp://import/css/adam.css">
+    <link rel="stylesheet" href="sp://import/css/shared.css">
+    <link rel="stylesheet" href="sp://import/css/api.css">
+    <link rel="stylesheet" href="suggestify.css">
+
     <script type="text/javascript" src="jquery.min.js"></script>
 </head>
 
 <body>
-    <h1> Here's a generated track list from echo nest and the current track</h1>
     <ul id="results"> </ul>
+
+<button class="button" onclick="refresh()">Refresh</button>
+
 
 <script type="text/javascript">
 
@@ -17,6 +23,12 @@ var sp = getSpotifyApi(1);
 
 // get the spotify models
 var m = sp.require('sp://import/scripts/api/models');
+var v = sp.require('sp://import/scripts/api/views');
+
+function refresh() {
+    alert("refresh");
+
+}
 
 
 // get the track that is currently playing
@@ -40,74 +52,88 @@ function getCurrentlyPlaying() {
 
 // play a track in the player
 function playTrack(track) {
-
     // play the track from it's uri, here you can pass the whole track object, but it will switch to album view away from the app
-    m.player.play(track.href);
+    m.player.play(track.uri);
+}
+
+// render the track 
+function renderTrack(track) {
+
+/*
+    var t = v.Track(track);
+    console.log(t);
+    return;
+  */  
+
+    // check track isn't already playing
+    if (m.player.track && m.player.track.data.uri === track.uri)
+        return;
+
+    // create a list element
+    var li = $("<li/>");
+
+    console.log(track);
+    var img =  $("<div class='cover'>"+
+                    "<a href='"+track.album.uri+"'>"+
+                        "<span class='image' style='height:150px;width:150px;background:url("+track.album.cover+")'><span class='play'></span></span>"+
+                    "</a>"+
+                    "<a href='"+track.uri+"' class='player'>"+
+                        "<span class='play'></span>"+
+                    "</a>"+
+                        "<span class='title'>"+track.name+"</span>"+
+                        "<span class='artist'></span>"+
+                "</a>");
+   
+
+    // play it on click
+    img.find(".player").click(function() {
+        playTrack(track);
+        return false;
+    });
+
+    var $artist = img.find(".artist");
+    for (var i = 0; i<track.artists.length;i++) {
+        if (i > 0)
+            $artist.append(", ");
+        $artist.append("<a href='"+track.artists[0].uri+"'>"+track.artists[0].name+"</a>")
+
+    }
+
+    li.append(img);
+
+    // add the list item
+    $("#results").append(li);
 }
 
 // using artist name and song name, find the spotify track
 function fetchSpotifyTrack(artist,song) {
 
-    /*
-    // using the future search model
-    var search = new m.Search(artist +" "+song);
-    search.observe(m.EVENT.CHANGE, function(e) {
-        console.log(e);
-        // This fires anytime the contents of the search object changes
-    });
-
-    */
-
-    // base url
-    var url = "http://ws.spotify.com/search/1/track?";
-
-    $.getJSON(url, {
-        q: artist +" "+song
-    },function(data) {
-
+    // using the search model
+    var search = new m.Search(artist +" "+song,function(results) {
         // spotify may return more than one possible track
-        for (var i= 0; i< data.tracks.length;i++) {
-            var track = data.tracks[i];
+        for (var i= 0; i< results.results.length;i++) {
+            var track = results.results[i].data;
 
-            // check that the artist name is the same
-            if (track.artists && track.artists[0].name === artist) {
-                
-                // check that the track name is the same
-                if (track.name === song) {
-                    // create a list element
-                    var li = $("<li/>");
+            // may be an album
+            if (track.type === "track") {
 
-                    // don't forget not all songs are available everywhere
-                    if (checkRegion(track.album)) {
+                // check that the artist name is the same
+                if (track.artists && track.artists[0].name === artist) {
+                    
+                    // check that the track name is the same
+                    if (track.name === song) {
 
-                        var a = $("<a href='"+track.href+"'/>");
-                        
-                        a.html(artist + " - " + song);
-                        // play it on click
-                        a.click(function() {
-                            playTrack(track);
-                            return false;
-                        });
-
-                        li.append(a);
-
-                    } else {
-                        
-                        li.html(artist + " - " + song);
-
-                        // NOT AVAILABLE show in red
-                        li.css('color','#f00')
+                        // don't forget not all songs are available everywhere
+                        if (checkRegion(track)) {
+                            renderTrack(track);
+                            // we no longer what to loop
+                            break; 
+                        }
                     }
-
-                    // add the list item
-                    $("#results").append(li);
-
-                    // we no longer what to loop
-                    break;
                 }
             }
         }
-    });  
+    });
 }
 
 // fetch track suggestions from echonest
@@ -141,15 +167,9 @@ function fetchSuggestions(artist, size) {
 }
 
 
-// check the region of the album, region string or album object
-function checkRegion(str) {
-    if (typeof str === "object") {
-        str = str.availability.territories;
-    }
-    if (str.indexOf(sp.core.country) >= 0 || str === "worldwide") {
-        return true;
-    }
-    return false;
+// check the region of the track
+function checkRegion(track) {
+    return track.availableForPlayback;
 }
 
 // when the track changes, we need to listen for an event

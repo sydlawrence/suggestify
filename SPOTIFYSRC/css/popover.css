@@ -1,0 +1,154 @@
+/**
+ * PopoverWidget Style
+ * Standard Layout for Spotify Client HTML Popovers
+ * @copyright 2011 by Spotify
+ */
+
+/**
+ * Animations for Popovers
+ *
+ * @section animations
+ */
+@-webkit-keyframes show-popover {
+	0%   { -webkit-transform: scale(0); opacity: 0; }
+	50%  { -webkit-transform: scale(1.1); }
+	100% { -webkit-transform: scale(1); opacity: 1; }
+}
+@-webkit-keyframes hide-popover {
+	0%   { opacity: 1; }
+	100% { opacity: 0; }
+}
+@-webkit-keyframes sending-popover {
+	0%   { -webkit-transform: scale(1); opacity: 1; }
+	100% { -webkit-transform: scale(0); opacity: 0; }
+}
+
+/**
+  * @section styles
+  */
+.popover {
+	-webkit-animation-duration: 300ms;
+	-webkit-animation-fill-mode: forwards;
+	-webkit-animation-iteration-count: 1;
+	-webkit-animation-name: show-popover;
+	-webkit-border-image: url("sp://import/img/popover-down.png") 15 15 20 35 / 15px 15px 20px 35px;
+	-webkit-transform-origin: 23px top;
+	border-width: 7px;
+	box-sizing: border-box;
+	left: -3px;
+	margin-top: 27px;
+	max-width: 376px;
+	opacity: 1;
+	padding: 14px 12px 16px 12px;
+	position: absolute;
+	right: 11px;
+	text-shadow: initial;
+	top: 0;
+	z-index: 100;
+}
+.popover.hidden {
+	-webkit-animation-duration: 200ms;
+	-webkit-animation-name: hide-popover;
+}
+.popover.sent {
+	-webkit-animation-duration: 300ms;
+	-webkit-animation-name: sending-popover;
+}
+.popover.inverted {
+	-webkit-border-image: url("sp://import/img/popover-up.png") 15 15 25 35 / 15px 15px 25px 35px;
+	-webkit-transform-origin: 23px bottom;
+	border-width: 7px;
+	margin-top: -7px;
+	padding: 8px 12px 22px 12px;
+}
+.popover.flipped {
+	-webkit-border-image: url("sp://import/img/popover-flipped.png") 15 35 20 15 / 15px 35px 20px 15px;
+	-webkit-transform-origin: 177px top;
+	border-width: 7px;
+}
+.popover.inverted.flipped {
+	-webkit-border-image: url("sp://import/img/popover-flipped-up.png") 15 35 25 15 / 15px 35px 25px 15px;
+	-webkit-transform-origin: 177px bottom;
+	padding: 8px 12px 22px 12px;
+}
+.popover .optional-message {
+	display: block;
+	margin-bottom: 10px;
+}
+.popover .optional-message a {
+	color: #666;
+	font-weight: bold;
+}
+.popover .checkmark {
+	-webkit-transition: 400ms opacity;
+	background: #f1f1f1;
+	display: block;
+	left: 4px;
+	position: absolute;
+	top: 8px;
+	z-index: 10;
+}
+.popover.inverted .checkmark {
+	bottom: 14px;
+	top: auto;
+}
+	.popover .checkmark div {
+		background: url('sp://import/img/checkmark.png') 0 0 no-repeat;
+		height: 66px;
+		margin: -33px -31px 0 0;
+		position: absolute;
+		right: 50%;
+		top: 50%;
+		width: 62px;
+		z-index: 10;
+	}
+.popover .popover-share > div {
+	height: 50px;
+	margin-bottom: 7px;
+	padding: 0 0 0 57px;
+	position: relative;
+}
+.popover .title a {
+	color: #666;
+}
+.popover form {
+	text-align: right;
+	white-space: nowrap;
+}
+.popover textarea {
+	border: 1px solid #AAA;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 #FFF;
+	box-sizing: border-box;
+	display: block;
+	height: 48px;
+	margin-bottom: 7px;
+	resize: none;
+	width: 100%;
+}
+.popover .new-button:last-child { margin-left: 7px; }
+.popover .artwork {
+	height: 50px;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 50px;
+}
+.popover .artwork .image {
+	border: 0;
+	-webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.2), inset 0 0 1px rgba(0,0,0,0.4), 0 1px 0px rgba(255,255,255,0.5);
+	height: 48px;
+	width: 48px;
+}
+.popover .artwork .album 	{ background-image: url("sp://import/img/placeholders/50-album.png"); }
+.popover .artwork .artist 	{ background-image: url("sp://import/img/placeholders/50-artist.png"); }
+.popover .artwork .playlist { background-image: url("sp://import/img/placeholders/50-playlist.png"); }
+.popover .artwork .track 	{ background-image: url("sp://import/img/placeholders/50-track.png"); }
+.popover .title {
+	color: #666;
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-size: 14px;
+	font-weight: bold;
+	line-height: 25px;
+	padding-top: 3px;
+}

@@ -1,0 +1,56 @@
+ #results {
+      padding:20px;  
+    }
+
+    #results li {
+        float:left;
+        padding:0px;
+
+    }
+
+    .cover {
+        display:block;
+        position:relative;
+        padding:10px;
+        margin:10px;
+        border-radius:3px;
+        width:150px;
+        text-decoration:none;
+        -webkit-transition:background 100ms linear;
+    }
+
+    .cover .player {
+        position:absolute;
+        width:40px;
+        height:40px;
+        background:#f00;
+        top:
+
+    }
+
+    .cover:hover {
+        background:rgba(255,255,255,0.05);
+        box-shadow:#000 0px 0px 5px inset;
+    }
+
+    .cover .title {
+        display:block;
+        text-align:center;
+        padding-top:10px;
+        width:100%;
+        white-space:nowrap;
+        overflow:hidden;
+        text-overflow:ellipsis;
+        color:#fff;
+        font-weight:bold;
+    
+    }
+
+    .cover .artist {
+        overflow:hidden;
+        width:100%;
+        white-space:nowrap;
+        text-overflow:ellipsis;
+        display:block;
+        text-align:center;
+    }

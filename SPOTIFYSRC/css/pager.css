@@ -1,0 +1,95 @@
+/**
+ * PagerWidget Style
+ * Standard Layout for Spotify Client HTML Pagers
+ * @copyright 2011 by Spotify
+ */
+
+/**
+ * @section styles
+ */
+.pager {
+	position: relative;
+}
+	.pager .window {
+		overflow: hidden;
+		position: relative;
+		clear: both;
+	}
+		.pager .window ul, .pager .window table {
+			width: 100%;
+			height: 100%;
+			-webkit-transition: top .3s, left .3s;
+		}
+		.pager .window.no-animations ul, .pager .window.no-animations table {
+			-webkit-transition-duration: 0;
+		}
+
+.paging {
+	min-width: 50px;
+	opacity: .4;
+	pointer-events: none;
+	text-align: center;
+}
+.paging.active {
+	-webkit-transition: all .4s;
+	opacity: 1;
+	pointer-events: auto;
+}
+	.paging li {
+		display: inline-block;
+		height: 25px;
+		width: 25px;
+	}
+	.paging .inactive {
+		opacity: .4;
+		pointer-events: none;
+	}
+	.paging a {
+		display: block;
+		width: 100%;
+		height: 100%;
+		text-indent: -999em;
+		background: url(sp://import/img/pagination25x25.png) -125px 0;
+		cursor: default;
+		-webkit-user-drag: none;
+	}
+	.paging .active a {
+		background-position-x: -100px;
+	}
+	.paging .prev a {
+		background-position-x: 0;
+	}
+	.paging .prev a:active {
+		background-position-x: -25px;
+	}
+	.vertical .paging .prev a {
+		background-position-x: -225px;
+	}
+	.vertical .paging .prev a:active {
+		background-position-x: -250px;
+	}
+	.paging .next a {
+		background-position-x: -50px;
+	}
+	.paging .next a:active {
+		background-position-x: -75px;
+	}
+	.vertical .paging .next a {
+		background-position-x: -175px;
+	}
+	.vertical .paging .next a:active {
+		background-position-x: -200px;
+	}
+
+/* Pager on top */
+.pager.paging-top h2 {
+	overflow: hidden;
+	margin-right: 60px;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.pager.paging-top .paging {
+	position: absolute;
+	top: -4px;
+	right: 0;
+}

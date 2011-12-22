@@ -1,0 +1,103 @@
+/**
+ * Adam Theme / Dark Theme
+ * Standard Layout for Spotify Client
+ * Defines the basic styles for an app
+ * @copyright 2011 by Spotify
+ */
+
+/**
+ * Declarations for Adam Theme
+ *
+ * @section declarations
+ */
+
+/**
+ * Import declarations */
+@import url("sp://import/css/core-dark.css");
+@import url("sp://import/css/shared.css");
+
+/**
+ * Namespace declaration */
+@namespace sp "http://www.spotify.com/";
+
+/**
+ * Adam Theme specific styles
+ *
+ * @section styles
+ */
+html {
+	background-color: #373737;
+	color: #999;
+}
+h1, h2, h3, h4 {
+	color: #FFF;
+	font: 14px/19px  "Helvetica", "Arial", sans-serif;
+}
+.offline h1 {
+	color: #1b1b1b;
+	font-family: "Helvetica", "Arial", sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	left: auto;
+	line-height: 25px;
+	margin-top: -12px;
+	position: relative;
+	top: 50%;
+	text-align: center;
+	text-shadow: 1px 1px 0px #515151;
+}
+
+/**
+ * Throbber, Adam Theme / Dark Theme */
+@-webkit-keyframes throbber {
+	0%     { background-position-x: 0; }
+	8.33%  { background-position-x: -32px; }
+	16.66% { background-position-x: -64px; }
+	25%    { background-position-x: -96px; }
+	33.33% { background-position-x: -128px; }
+	41.66% { background-position-x: -160px; }
+	50%    { background-position-x: -192px; }
+	58.33% { background-position-x: -224px; }
+	66.66% { background-position-x: -256px; }
+	75%    { background-position-x: -288px; }
+	83.33% { background-position-x: -320px; }
+	91.66% { background-position-x: -352px; }
+}
+.throbber, .throbber div, .throbber span {
+	position: absolute;
+}
+.throbber, .throbber span {
+	left: 0;
+	right: 0;
+}
+.throbber div, .throbber span {
+	top: 50%;
+}
+.throbber {
+	-webkit-transition: 400ms opacity;
+	background: #474747;
+	bottom: 0;
+	display: block;
+	top: 0;
+	z-index: 10;
+}
+	.throbber div {
+		-webkit-animation: throbber 1s infinite;
+		-webkit-animation-timing-function: step-start;
+		background: url("sp://import/img/throbber-big-white.png") 0 0 no-repeat;
+		height: 32px;
+		margin: -16px -16px 0 0;
+		right: 50%;
+		width: 32px;
+		z-index: 10;
+	}
+	.throbber span {
+		color: #DDD;
+		margin-top: 16px;
+		text-align: center;
+		text-shadow: initial;
+	}
+
+.paging a {
+	background-image: url(sp://import/img/paginationDark25x25.png);
+}

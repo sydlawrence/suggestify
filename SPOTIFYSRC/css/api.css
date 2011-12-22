@@ -1,0 +1,166 @@
+/**
+ * Importer for all api specific styles.
+ * @copyright 2011 by Spotify
+ */
+
+/**
+ * Import declarations
+ *
+ * @section declarations
+ */
+@import url("sp://import/css/image.css");
+@import url("sp://import/css/grid.css");
+@import url("sp://import/css/list.css");
+@import url("sp://import/css/pager.css");
+@import url("sp://import/css/player.css");
+@import url("sp://import/css/popover.css");
+
+.sp-drag-image {
+	background: #FFF;
+	border: 1px solid #000;
+	color: #000;
+	font-size: 11px;
+	line-height: 18px;
+	max-width: 100%;
+	opacity: 0.99;
+	padding: 0 4px;
+	position: fixed;
+	text-shadow: initial;
+	top: 0;
+	z-index: -1;
+}
+
+/**
+ * .sp-button
+ * Spotify namespaced button, same as new-button in shared.css but follows the namespace rules
+ * also w/ primary, flat and with additional icons for sharing and stuff
+ */
+.sp-button {
+	-webkit-border-image: url("sp://import/img/info_group-button.png") 0 7 42 7;
+	background: initial;
+	border: initial;
+	border-width: 0 7px;
+	box-sizing: border-box;
+	color: #333;
+	cursor: default;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 17px;
+	margin: 0;
+	max-width: 100%;
+	overflow: hidden;
+	padding: 2px;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	text-shadow: 0 1px 0 #EEE;
+	white-space: nowrap;
+}
+.sp-button:active {
+	-webkit-border-image: url("sp://import/img/info_group-button.png") 21 11 21 11;
+}
+.sp-button:disabled {
+	-webkit-border-image: url("sp://import/img/info_group-button.png") 42 11 0 11;
+	text-shadow: 0 1px 0 #AAA;
+}
+/**
+ * .sp-button.sp-primary
+ * @description: .sp-button w/ primary style
+ */
+.sp-button.sp-primary {
+	-webkit-border-image: url("sp://import/img/button.png") 0 5 75 5;
+	background: initial;
+	border: initial;
+	border-width: 0 5px;
+	box-sizing: border-box;
+	color: #FFF;
+	cursor: default;
+	display: inline-block;
+	font-size: 12px;
+	line-height: 19px;
+	margin: 0;
+	max-width: 100%;
+	overflow: hidden;
+	padding: 3px 3px 3px;
+	text-decoration: none;
+	text-overflow: ellipsis;
+	text-shadow: 0 -1px 0 rgba(0, 0, 0, .27);
+	white-space: nowrap;
+}
+.sp-button.sp-primary:active {
+	-webkit-border-image: url("sp://import/img/button.png") 25 5 50 5;
+}
+.sp-button.sp-primary:disabled {
+	-webkit-border-image: url("sp://import/img/button.png") 0 5 75 5;
+	opacity: 0.3;
+}
+
+/**
+ * .sp-button.sp-flat
+ * @description: Flat style button
+ */
+.sp-button.sp-flat {
+	-webkit-border-image: initial;
+	background: rgba(0, 0, 0, 0.25);
+	border: initial;
+	border-width: 1px;
+	border-radius: 4px;
+	color: #A0A0A0;
+	padding: 3px 14px 3px;
+	text-shadow: none;
+}
+.sp-button.sp-flat:hover {
+	background-color: rgba(0, 0, 0, 0.6);
+	color: #FFF;
+}
+.sp-button.sp-flat:active {
+	background-color: rgba(0, 0, 0, 0.8);
+	color: #787878;
+}
+.sp-button.sp-flat:disabled {
+	opacity: 0.3;
+}
+	/* Light version */
+	.sp-button.sp-flat.sp-light {
+		background-color: rgba(0, 0, 0, 0.1);
+		color: #747474;
+	}
+	.sp-button.sp-flat.sp-light:hover {
+		background-color: rgba(0, 0, 0, 0.2);
+		color: #686868;
+	}
+	.sp-button.sp-flat.sp-light:active {
+		background-color: rgba(0, 0, 0, 0.3);
+		color: #585858;
+	}
+
+/**
+ * .sp-button.sp-icon
+ * @usage: Buttons that requires icons e.g. share playlist
+ */
+.sp-button.sp-icon span {
+	display: inline-block;
+	position: relative;
+	top: 2px;
+	height: 12px;
+	width: 14px;
+	margin-right: 3px;
+	overflow: hidden;
+}
+	.sp-button.sp-icon .sp-plus::before {
+		position: relative;
+		top: 0;
+		content: url('sp://import/img/button-icons.png');
+	}
+	.sp-button.sp-icon .sp-share::before {
+		position: relative;
+		top: -12px;
+		content: url('sp://import/img/button-icons.png');
+	}
+	.sp-button.sp-icon .sp-cross::before {
+		position: relative;
+		top: -23px;
+		content: url('sp://import/img/button-icons.png');
+	}
+	/* TODO: Add classes for .sp-button.flat.icon once we get the sprites from Tobi */
+
+a { -webkit-user-drag: element; }
