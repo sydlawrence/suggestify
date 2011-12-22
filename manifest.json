@@ -1,16 +1,16 @@
 {
         "BundleType": "Application",
         "AppIcon": {
-                "18x18": "icon.png"
+                "36x18": "app-icon.png"
         },
         "AppName": {
-                "en": "suggestify"
+                "en": "Suggestify"
         },
         "SupportedLanguages": [
                 "en"
         ],
         "RequiredPermissions": [
                 "http://*.echonest.com",
-                "http://*.spotify.com",
+                "http://*.spotify.com"
         ]
 }

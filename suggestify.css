@@ -1,11 +1,63 @@
+ body {
+     padding-top:50px;
+
+ }
+
+ footer {
+     padding:10px 40px;
+
+ }
+
+#autoplay {
+    -webkit-border-image:none;
+    border-radius:3px;
+    padding-left:10px;
+    padding-right:10px;
+    color:#fff;
+    text-shadow: 0 1px 0 #111;
+
+}
+
+ #autoplay.noautoplay {   
+     background:rgba(132,0,0,1);
+     
+ }
+
+ #autoplay.autoplay {
+     background:rgba(0,132,0,1);
+
+ }
+
  #results {
-      padding:20px;  
+      padding:20px;
+      overflow:hidden;
+      height:460px;  
     }
 
     #results li {
         float:left;
         padding:0px;
 
+    }
+
+    header {
+        position:fixed;
+        width:100%;
+        z-index:999;
+        background:#1b1b1b;
+        padding:10px 0;
+        top:0;
+    }
+
+    h1 {
+        font-weight:bold;
+        padding-left:10px;
+
+    }
+
+    header aside {
+        float:right;
+        margin-right:10px;
     }
 
     .cover {
@@ -17,6 +69,22 @@
         width:150px;
         text-decoration:none;
         -webkit-transition:background 100ms linear;
+        border:1px solid transparent;
+    }
+
+    .error {
+        text-align:center;
+        background:#fcc;
+        padding:10px;
+        border-radius:3px;
+        margin:10px;
+        color:#000;
+    }
+
+    .error h2 {
+        color:#f00;
+        font-weight:bold;
+        text-shadow:0px 1px 2px #fff;
     }
 
     .cover .image {
@@ -34,6 +102,20 @@
         background:url(img/buttons/Medium/Play-Medium.png);
     }
 
+    li .first {
+        display:none;
+    }
+
+    .first .first {
+        display:block;
+    }
+
+    .first .cover {
+        //background:rgba(200,255,200,0.05);
+        //box-shadow:#fff 0px 0px 5px inset;
+        border:1px solid #1a1a1a;
+    }
+
     .cover:hover {
         background:rgba(255,255,255,0.05);
         box-shadow:#000 0px 0px 5px inset;
@@ -49,6 +131,19 @@
 
     .cover .player:active {
         background:url(img/buttons/Medium/Play-Medium-Pressed.png);
+    }
+
+    .first {
+        position:relative;
+    }
+
+    .first .first {
+        position:absolute;
+        top:-10px;
+        left:20px;
+        text-transform:uppercase;
+        color:#fff;
+        font-weight:bold;
     }
 
     .cover .title {
