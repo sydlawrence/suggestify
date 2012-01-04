@@ -1,12 +1,23 @@
- /**
- * Copyright (c) 2011 All Right Reserved, Syd Lawrence (sydlawrence@gmail.com)
- *
- * This program is NOT free software: you can use this code but you
- * cannot modify it in any way. I have released this under the screw you
- * licence, I want my code to be kept mine, that's the way I roll.
- *
- * This code is pimp yo
- */
+/**
+  * Copyright (C) 2011  Syd Lawrence (sydlawrence@gmail.com)
+  *
+  * This program is free software: you can redistribute it and/or modify
+  * it under the terms of the GNU General Public License as published by
+  * the Free Software Foundation, either version 3 of the License, or
+  * (at your option) any later version.
+  * 
+  * THIS SOFTWARE AND DOCUMENTATION IS PROVIDED "AS IS," AND COPYRIGHT
+  * HOLDERS MAKE NO REPRESENTATIONS OR WARRANTIES, EXPRESS OR IMPLIED,
+  * INCLUDING BUT NOT LIMITED TO, WARRANTIES OF MERCHANTABILITY OR
+  * FITNESS FOR ANY PARTICULAR PURPOSE OR THAT THE USE OF THE SOFTWARE
+  * OR DOCUMENTATION WILL NOT INFRINGE ANY THIRD PARTY PATENTS,
+  * COPYRIGHTS, TRADEMARKS OR OTHER RIGHTS.COPYRIGHT HOLDERS WILL NOT
+  * BE LIABLE FOR ANY DIRECT, INDIRECT, SPECIAL OR CONSEQUENTIAL
+  * DAMAGES ARISING OUT OF ANY USE OF THE SOFTWARE OR DOCUMENTATION.
+  * 
+  * You should have received a copy of the GNU General Public License
+  * along with this program. If not, see <http://gnu.org/licenses/>.
+  */
 
 // get the standard spotify apis
 var sp = getSpotifyApi(1);
