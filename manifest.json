@@ -11,6 +11,7 @@
         ],
         "RequiredPermissions": [
                 "http://*.echonest.com",
-                "http://*.spotify.com"
+                "http://*.spotify.com",
+                "http://*.twitter.com"
         ]
 }

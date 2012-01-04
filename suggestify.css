@@ -243,3 +243,12 @@
         display:block;
         text-align:center;
     }
+
+#tweetButton{
+  float:right;
+  background:#fff;
+}
+
+  #tweetButton iframe, #tweetButton iframe body {
+    background:#fff;
+  }

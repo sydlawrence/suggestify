@@ -96,7 +96,21 @@ function renderMainTrack(track) {
         playing.hide();
         return;
     }
-    console.log(track);
+    
+    // setup the tweet button
+    var tweetText = "I just discovered {TRACK}".replace('{TRACK}',track.name + " by " + track.artists[0].name);
+    var tweetLink = track.uri.replace('spotify:track:','http://open.spotify.com/track/');
+    
+    
+    tweetUrl = "https://twitter.com/share?url="+tweetLink+"&via=spotify&text="+tweetText+"&hashtags=suggestify";
+    
+    
+    twitterUrl = "http://platform.twitter.com/widgets/tweet_button.html?count=none&size=large&url="+tweetLink+"&via=spotify&text="+tweetText+"&hashtags=suggestify";
+    $('#twitter_share_frame').attr('src',twitterUrl).css('border-radius','5px');
+    
+    
+      
+    // setup the display block
     playing.show();
     playing.find("a.track").attr('href',track.uri);
 
@@ -104,7 +118,7 @@ function renderMainTrack(track) {
     playing.find(".title").html(track.name);
     playing.find("#popularity").html(track.popularity);
 
-
+    /*
     var $star = $("<span class='star'></span>");
 
     playing.find('#starred').html($star);
@@ -123,6 +137,7 @@ function renderMainTrack(track) {
             renderMainTrack(track);
         });
     }
+    */
 
     // find the artist span
     var $artist = playing.find(".artist").html("");
