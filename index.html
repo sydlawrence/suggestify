@@ -57,28 +57,30 @@ function fetchSpotifyTrack(artist,song) {
     });
 
     */
-
-    // base url
-    var url = "http://ws.spotify.com/search/1/track?";
-
-    $.getJSON(url, {
-        q: artist +" "+song
-    },function(data) {
+    
+    // build the search query
+    var query = artist + " " + song;
+    
+    // using the search model
+    var search = new m.Search(query,function(results) {
 
         // spotify may return more than one possible track
-        for (var i= 0; i< data.tracks.length;i++) {
-            var track = data.tracks[i];
+        for (var i= 0; i< results.results.length;i++) {
+
+            // get the actual track
+            var track = results.results[i].data;
 
             // check that the artist name is the same
             if (track.artists && track.artists[0].name === artist) {
                 
                 // check that the track name is the same
                 if (track.name === song) {
+                                
                     // create a list element
                     var li = $("<li/>");
-
+                    
                     // don't forget not all songs are available everywhere
-                    if (checkRegion(track.album)) {
+                    if (track.availableForPlayback) {
 
                         var a = $("<a href='"+track.href+"'/>");
                         
@@ -105,9 +107,9 @@ function fetchSpotifyTrack(artist,song) {
                     // we no longer what to loop
                     break;
                 }
-            }
+            }           
         }
-    });  
+    });
 }
 
 // fetch track suggestions from echonest
@@ -138,18 +140,6 @@ function fetchSuggestions(artist, size) {
             info("failed getting results");
         }
     });
-}
-
-
-// check the region of the album, region string or album object
-function checkRegion(str) {
-    if (typeof str === "object") {
-        str = str.availability.territories;
-    }
-    if (str.indexOf(sp.core.country) >= 0 || str === "worldwide") {
-        return true;
-    }
-    return false;
 }
 
 // when the track changes, we need to listen for an event
