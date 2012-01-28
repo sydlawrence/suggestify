@@ -220,6 +220,16 @@ function renderTrack(track) {
     if (displayCount === 0 && autoPlay)
         li.addClass("first");
 
+
+    var t = {
+      data:track,
+    };
+    
+    // this is the spotify view object, hopefully can replace my image with it
+    var view = new v.Track(t,v.Track.FIELD.TRACK); 
+    
+    console.log(view);
+
     // the markup
     var img =  $("<div class='cover'>"+
                     "<a href='"+track.uri+"'>"+
@@ -229,8 +239,7 @@ function renderTrack(track) {
                         "<span class='title'>"+track.name+"</span>"+
                         "<span class='artist'></span>"+
                 "</div>");
-   
-
+    
     // play it on click
     img.find("a").click(function() {
         playTrack(track);
