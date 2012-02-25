@@ -1,5 +1,11 @@
  body {
-     padding-top:50px;
+    min-height:100%;
+    padding-top:50px;
+    background-image: -webkit-linear-gradient(-90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
+    background-image: linear-gradient(-90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
+
+}
+
 
  }
 
@@ -31,7 +37,7 @@
  #results {
       padding:20px;
       overflow:hidden;
-      height:460px;  
+      max-height:460px;  
     }
 
     #results li {
@@ -49,15 +55,52 @@
         top:0;
     }
 
+    footer {
+        position:fixed;
+        width:100%;
+        z-index:999;
+        background:#1b1b1b;
+        padding:10px 0;
+        bottom:0;  
+    }
+
+    body {
+        padding-bottom:20px;
+
+    }
+
+    footer div {
+        padding:0 20px;
+    }
+
+    footer a {
+        color:#fff;
+    }
+
+    #echonest {
+        float:right;
+    }
+
+    #copyright {
+        text-transform:uppercase;
+        line-height:35px;
+    }
+
     h1 {
         font-weight:bold;
-        padding-left:10px;
+        padding-left:20px;
+        margin-bottom:5px;
+
+    }
+
+    header p {
+        padding-left:20px;
 
     }
 
     header aside {
         float:right;
-        margin-right:10px;
+        margin-right:20px;
     }
 
     #currentlyPlaying {
@@ -65,9 +108,10 @@
         border-radius:3px; 
         padding:20px;
         margin:20px;  
-        -webkit-box-shadow: inset 0 1px 0 rgba(0, 0, 0, .05), 0 1px 0 rgba(255, 255, 255, .53);
+        box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
         height:64px; 
         position:relative;
+        top:20px;
     }
 
     #currentlyPlaying:before {
@@ -94,23 +138,7 @@
     #currentlyPlaying dd {
         font-weight:bold;
         color:#1b1b1b;
-    }
-
-    #currentlyPlaying #starred .star {
-        width:16px;
-        display:block;
-        height:16px;
-        overflow:hidden;
-        text-indent:-9999px;
-        cursor:pointer;
-    }
-
-    #currentlyPlaying #starred .star.yes, #currentlyPlaying #starred .star.no:hover {
-        background:url(img/star-yes.png);
-    }
-
-    #currentlyPlaying #starred .star.yes:hover, #currentlyPlaying #starred .star.no {
-        background:url(img/star-no.png);
+    text-shadow:#ccc 1px 1px 2px;
     }
 
     #currentlyPlaying .image {
@@ -130,6 +158,10 @@
         margin-bottom:5px;
     }
 
+    #currentlyPlaying .artist {
+        text-shadow:#eee 1px 1px 2px;
+        font-size:2em;
+    }
 
 
     .cover {
@@ -164,17 +196,9 @@
 
     }
 
-    .cover .player {
-        position:absolute;
-        width:43px;
-        height:43px;
-        bottom:58px;
-        display:none;
-        right:15px;
-        background:url(img/buttons/Medium/Play-Medium.png);
-    }
+    
 
-    li.first:before {
+    li:not(.loading).first:before {
         position:absolute;
         top:-10px;
         left:20px;
@@ -194,10 +218,14 @@
     }
 
     .first .cover {
-        //background:rgba(200,255,200,0.05);
-        //box-shadow:#fff 0px 0px 5px inset;
-        border:1px solid #1a1a1a;
+        border:1px solid #999;
+        background-image: -webkit-linear-gradient(90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
+        background-image: linear-gradient(90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
+        box-shadow: 0 15px 10px -10px rgba(255,255,255, 0.5), 0 1px 4px rgba(255,255,255, 0.3), 0 0 40px rgba(255,255,255, 0.1) inset;
     }
+
+
+
 
     .cover:hover {
      //   background:rgba(255,255,255,0.05);
@@ -206,6 +234,16 @@
 
     .cover:hover .player {
         display:block;
+    }
+    
+    .cover .player {
+        position:absolute;
+        width:43px;
+        height:43px;
+        bottom:58px;
+        display:none;
+        right:15px;
+        background:url(img/buttons/Medium/Play-Medium.png);
     }
 
     .cover .player:hover {
@@ -244,11 +282,51 @@
         text-align:center;
     }
 
-#tweetButton{
-  float:right;
-  background:#fff;
+#results .loading {
+    background:#fff;
+    color:#444;
+    border-radius:3px;
+    margin-top:30px;
+    display:block;
+    font-size:23px;
+    width:250px;
+    text-align:center;
+    margin:30px auto;
+    font-size:11px;
+    float:none;
+    text-shadow:#ccc 1px 1px 2px;
+    padding:20px;
+    box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
+    position:relative;
 }
 
-  #tweetButton iframe, #tweetButton iframe body {
-    background:#fff;
-  }
+
+
+@-webkit-keyframes myThrobber {
+    0%     { background-position-x: 0; }
+    8.33%  { background-position-x: -30px; }
+    16.66% { background-position-x: -60px; }
+    25%    { background-position-x: -90px; }
+    33.33% { background-position-x: -120px; }
+    41.66% { background-position-x: -150px; }
+    50%    { background-position-x: -180px; }
+    58.33% { background-position-x: -210px; }
+    66.66% { background-position-x: -240px; }
+    75%    { background-position-x: -270px; }
+    83.33% { background-position-x: -300px; }
+    91.66% { background-position-x: -330px; }
+}
+
+.myThrobber {
+    display:block;
+    width:30px;
+    margin:10px auto 0;
+    height:30px;
+    background:url(img/loading_indicator.png);
+    -webkit-animation: myThrobber 1s infinite;
+    -webkit-animation-timing-function: step-start;
+}
+
+#shareButton {
+    float:right;
+}

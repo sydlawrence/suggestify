@@ -19,10 +19,35 @@
   * along with this program. If not, see <http://gnu.org/licenses/>.
   */
 
+var i18n = {
+    default: "en",
+    current: "en",
+    get:function(str) {
+        var ret = this[this.current][str];
+        if (ret) return ret;
+        else return "i18n."+this.current+"."+str;
+    },
+
+    en: {
+        loading: "Suggestify gremlins are working away",
+        offline: "<h2>Sorry! I can't call the mother ship as you appear to be offline.</h2><p>When you go back online, I can recommend some more songs.</p>",
+        noSuggestions: "<h2>Sorry! I can't suggest any songs for the artist: :artist.</h2><p>To be honest, I have never heard of them before. I hope they are pretty good :)</p><p>When I can recommend some more songs, I'll let you know here!</p>",
+        noTrack: "<h2>Sorry! I can't suggest any songs as there is no current track</h2><p>When I can recommend some more songs, I'll let you know here!</p>"
+    }
+}
+
+i18n.current = i18n.default;
+
 // get the standard spotify apis
 var sp = getSpotifyApi(1);
 var m = sp.require('sp://import/scripts/api/models');
 var v = sp.require('sp://import/scripts/api/views');
+var ui = sp.require("sp://import/scripts/ui");
+var player = m.player,
+library = m.library,
+application = m.application,
+playerImage = new v.Player();
+
 
 // trackety track, I am a gremlin
 var googletracker = sp.require("sp://import/scripts/googletracker")
@@ -96,48 +121,15 @@ function renderMainTrack(track) {
         playing.hide();
         return;
     }
-    
-    // setup the tweet button
-    var tweetText = "I just discovered {TRACK}".replace('{TRACK}',track.name + " by " + track.artists[0].name);
-    var tweetLink = track.uri.replace('spotify:track:','http://open.spotify.com/track/');
-    
-    
-    tweetUrl = "https://twitter.com/share?url="+tweetLink+"&via=spotify&text="+tweetText+"&hashtags=suggestify";
-    
-    
-    twitterUrl = "http://platform.twitter.com/widgets/tweet_button.html?count=none&size=large&url="+tweetLink+"&via=spotify&text="+tweetText+"&hashtags=suggestify";
-    $('#twitter_share_frame').attr('src',twitterUrl).css('border-radius','5px');
-    
-    
       
     // setup the display block
     playing.show();
     playing.find("a.track").attr('href',track.uri);
+    console.log(track);
+    window.track = track;
 
-    playing.find(".image").css('background','url('+track.album.cover+')');
+    playing.find(".image").css('background','url('+track.data.album.cover+')');
     playing.find(".title").html(track.name);
-    playing.find("#popularity").html(track.popularity);
-
-    /*
-    var $star = $("<span class='star'></span>");
-
-    playing.find('#starred').html($star);
-
-    if (track.starred === true) {
-        $star.addClass("yes");
-        $star.html("yes").click(function() {
-            track.starred = false;
-            renderMainTrack(track);
-
-        });
-    } else {
-        $star.addClass("no");
-        $star.html("no").click(function() {
-            track.starred = true;
-            renderMainTrack(track);
-        });
-    }
-    */
 
     // find the artist span
     var $artist = playing.find(".artist").html("");
@@ -155,7 +147,6 @@ function renderMainTrack(track) {
 
 // get the track that is currently playing
 function getCurrentlyPlaying() {
-
     // refreshing
     searching = true;
     displayCount = 0;
@@ -163,20 +154,17 @@ function getCurrentlyPlaying() {
     // get the current track from the player
     var currentTrack = m.player.track;
     
-    renderMainTrack(currentTrack.data);
+    renderMainTrack(currentTrack);
 
     // if nothing currently playing
     if (currentTrack == null) {
 
         // error that bad boy
-        $('#results').html("<div class='error'><h2>Sorry! I can't suggest any songs as there is no current track</h2><p>When I can recommend some more songs, I'll let you know here!</p></div>")
+        $('#results').html("<div class='error'>"+i18n.get('noTrack')+"</div>")
     }
 
     // winner we have a track
     else {
-
-        // fade it
-        $('#results > *').fadeOut();
 
         // get the trackand the artist
         var track = currentTrack.data;
@@ -202,7 +190,6 @@ function playTrack(track) {
 // render the track 
 function renderTrack(track) {
 
-
     // check track isn't already playing
     if (m.player.track && m.player.track.data.uri === track.uri) {
         return;
@@ -210,8 +197,8 @@ function renderTrack(track) {
     if (!searching)
         return;
 
-    // fade them all in
-    $('#results > *').fadeIn();
+    // hiding the loading div
+    $("#results .loading").remove();
 
     // create a list element
     var li = $("<li/>");
@@ -220,7 +207,6 @@ function renderTrack(track) {
     if (displayCount === 0 && autoPlay)
         li.addClass("first");
 
-
     var t = {
       data:track,
     };
@@ -228,8 +214,6 @@ function renderTrack(track) {
     // this is the spotify view object, hopefully can replace my image with it
     var view = new v.Track(t,v.Track.FIELD.TRACK); 
     
-    console.log(view);
-
     // the markup
     var img =  $("<div class='cover'>"+
                     "<a href='"+track.uri+"'>"+
@@ -339,8 +323,10 @@ function fetchSuggestions(artist, size) {
     if (!navigator.onLine) {
         setAutoPlay(false);
         // WTF? How am I meant to call back to the mother ship
-        $('#results').html("<div class='error'><h2>Sorry! I can't call the mother ship as you appear to be offline.</h2><p>When you go back online, I can recommend some more songs.</p></div>")
+        $('#results').html("<div class='error'>"+i18n.get('offline')+"</div>")
     }
+    $('#results').html("<li class='loading'>"+i18n.get('loading')+"<span class='myThrobber'></span></li>")
+
 
     // find similar songs using echonest
     var url = 'http://developer.echonest.com/api/v4/playlist/basic?api_key='+echoNestAPIKey+'&callback=?';
@@ -356,9 +342,6 @@ function fetchSuggestions(artist, size) {
         // did we get a valid response?
         if (data.response && data.response.status.code === 0) {
 
-            // empty the results div
-            $("#results").empty();
-
             for (var i = 0; i < data.response.songs.length; i++) {
                 
                 // we now have the echo nest song
@@ -370,7 +353,9 @@ function fetchSuggestions(artist, size) {
         }
         else { // NO WE DIDN'T ARGH ARGH ARGH
             // show an error
-            $('#results').html("<div class='error'><h2>Sorry! I can't suggest any songs for the artist: "+artist+".</h2><p>To be honest, I have never heard of them before. I hope they are pretty good :)</p><p>When I can recommend some more songs, I'll let you know here!</p></div>");
+            var str = i18n.get("noSuggestions");
+            str = str.replace(":artist",artist);
+            $('#results').html("<div class='error'>"+str+"</div>");
         }
     });
 }
@@ -399,16 +384,18 @@ sp.trackPlayer.addEventListener("playerStateChanged", function (event) {
 
 // play the next track
 function playNext() {
-
     // are we meant to be playing the next one?
     if (!autoPlay) return;
+    if ($("#results li:not(.loading).first").length === 0) {
+        return setAutoPlay(false);
+    }
 
     // pause it, this stops multiple issues happening
     paused = true;
     m.player.playing = false
 
     // click the first one
-    $("#results li.first a").click();
+    $("#results li:not(.loading).first a").click();
 
     // no longer paused
     paused = false;
@@ -458,5 +445,8 @@ $('#autoplay').click(function() {
     }
 })
 
+$("#shareButton").click(function() {
+    application.showSharePopup($(this)[0],m.player.track.uri);     
+}); 
 
 
