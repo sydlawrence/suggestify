@@ -156,6 +156,8 @@ function getCurrentlyPlaying() {
     
     renderMainTrack(currentTrack);
 
+    console.log("RARRR");
+
     // if nothing currently playing
     if (currentTrack == null) {
 
@@ -261,7 +263,7 @@ function fetchSpotifyTrack(artist,song) {
 
     // we have a spotify track, but what shall we do with it?
     function parseTrack(track) {
-
+        track = track.data;
         // may be an album
         if (track.type === "track") {
 
@@ -286,39 +288,49 @@ function fetchSpotifyTrack(artist,song) {
                 }
             }
         }
+        return false;
     }
-
+    /*
     // have we have found info on this before?
     if (window.localStorage[query]) {
 
         // damn straight we have, well we no longer need to search spotify for it
         var track = m.Track.fromURI(window.localStorage[query]);
-        parseTrack(track.data);
+        parseTrack(track);
         return;
     }
+    */
 
     // using the search model
-    var search = new m.Search(query,function(results) {
+    var search = new m.Search(query);
 
-        // check that it isn't already searching... I think this was put in as a precautionary measure... probably should have commented before ;)
-        if (!searching) return;
 
-        // spotify may return more than one possible track
-        for (var i= 0; i< results.results.length;i++) {
-
-            // get the actual track
-            var track = results.results[i].data;
-
-            // parse it, if it is what we want, then no need to loop through tracks
-            if (parseTrack(track) === true)
-                break;
-        }
+    var found = false;
+    search.tracks.forEach(function(track) {
+        if (found === true) return;
+        found = parseTrack(track);
     });
+
+    search.localResults = m.LOCALSEARCHRESULTS.APPEND;
+
+    search.observe(m.EVENT.ITEMS_ADDED, function() {
+        var found = false;
+        search.tracks.forEach(function(track) {
+            if (found === true) return;
+            found = parseTrack(track);
+        });
+    });
+
+    search.observe(m.EVENT.LOAD_ERROR, function() {
+        console.log("ERROR");
+    });
+
+    search.appendNext();
 }
 
 // fetch track suggestions from echonest
 function fetchSuggestions(artist, size) {
-
+    console.log("fetch suggestions");
     // check if app is online
     if (!navigator.onLine) {
         setAutoPlay(false);
