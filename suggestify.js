@@ -32,7 +32,7 @@ var i18n = {
         loading: "Suggestify gremlins are working away",
         offline: "<h2>Sorry! I can't call the mother ship as you appear to be offline.</h2><p>When you go back online, I can recommend some more songs.</p>",
         noSuggestions: "<h2>Sorry! I can't suggest any songs for the artist: :artist.</h2><p>To be honest, I have never heard of them before. I hope they are pretty good :)</p><p>When I can recommend some more songs, I'll let you know here!</p>",
-        noTrack: "<h2>Sorry! I can't suggest any songs as there is no current track</h2><p>When I can recommend some more songs, I'll let you know here!</p>"
+        noTrack: "<h2>Sorry! I can't suggest any songs as there is no current track being played.</h2><p>When I can recommend some more songs, I'll let you know here!</p>"
     }
 }
 
@@ -125,7 +125,6 @@ function renderMainTrack(track) {
     // setup the display block
     playing.show();
     playing.find("a.track").attr('href',track.uri);
-    console.log(track);
     window.track = track;
 
     playing.find(".image").css('background','url('+track.data.album.cover+')');
@@ -154,19 +153,18 @@ function getCurrentlyPlaying() {
     // get the current track from the player
     var currentTrack = m.player.track;
     
+    $('#currentlyPlaying').removeClass("user-selected");    
     renderMainTrack(currentTrack);
-
-    console.log("RARRR");
+    console.log(currentTrack);
 
     // if nothing currently playing
-    if (currentTrack == null) {
-
-        // error that bad boy
-        $('#results').html("<div class='error'>"+i18n.get('noTrack')+"</div>")
+    if (currentTrack == null || currentTrack.data.isAd === true) {
+        noTrackPlaying();
     }
 
     // winner we have a track
     else {
+        isTrackPlaying();
 
         // get the trackand the artist
         var track = currentTrack.data;
@@ -176,7 +174,7 @@ function getCurrentlyPlaying() {
         tracksPlayed[track.uri] = track;
 
         // fetch suggestions
-        fetchSuggestions(artist, 30);
+        fetchSuggestions(artist, 50);
     }
 }
 
@@ -193,7 +191,7 @@ function playTrack(track) {
 function renderTrack(track) {
 
     // check track isn't already playing
-    if (m.player.track && m.player.track.data.uri === track.uri) {
+    if (m.player.track && m.player.track.data.uri === track.data.uri) {
         return;
     }
     if (!searching)
@@ -209,28 +207,32 @@ function renderTrack(track) {
     if (displayCount === 0 && autoPlay)
         li.addClass("first");
 
-    var t = {
-      data:track,
-    };
+    var t = track;
+    // legacy
+    track = track.data;
     
     // this is the spotify view object, hopefully can replace my image with it
-    var view = new v.Track(t,v.Track.FIELD.TRACK); 
+    //var view = new v.Track(t,v.Track.FIELD.TRACK); 
     
-    // the markup
-    var img =  $("<div class='cover'>"+
-                    "<a href='"+track.uri+"'>"+
-                        "<span class='image' style='height:150px;width:150px;background:url("+track.album.cover+")'></span>"+
-                        "<span class='player'></span>"+
-                    "</a>"+
+     var img =  $("<div class='cover'>"+
+                    "<span class='playerView'></span>"+
                         "<span class='title'>"+track.name+"</span>"+
                         "<span class='artist'></span>"+
                 "</div>");
     
-    // play it on click
-    img.find("a").click(function() {
-        playTrack(track);
-        return false;
-    });
+    var playerView = new v.Player();
+
+
+    /* Create a temporary playlist for the song */
+    var playlist = new m.Playlist();
+    playlist.add(t);
+    playerView.track = null; // Don't play the track right away
+    playerView.context = playlist;
+    //playerView._context.data.uri = track.album.uri;
+    console.log(playerView);
+
+    img.data("uri",track.album.uri);
+    img.find('.playerView').append(playerView.node);
 
     // find the artist span
     var $artist = img.find(".artist");
@@ -245,11 +247,13 @@ function renderTrack(track) {
 
     }
 
+
     // add this to the list item
     li.append(img);
 
     // add the list item to the results
     $("#results").append(li);
+
 
     // 1 more has been rendered
     displayCount++
@@ -263,7 +267,9 @@ function fetchSpotifyTrack(artist,song) {
 
     // we have a spotify track, but what shall we do with it?
     function parseTrack(track) {
+        var t = track;
         track = track.data;
+
         // may be an album
         if (track.type === "track") {
 
@@ -280,13 +286,16 @@ function fetchSpotifyTrack(artist,song) {
                         window.localStorage[query] = track.uri;
 
                         // display this bad boy
-                        renderTrack(track);
+                        renderTrack(t);
 
                         // we no longer what to loop
                         return true
                     }
                 }
             }
+        } else {
+            console.log(t);
+
         }
         return false;
     }
@@ -330,7 +339,7 @@ function fetchSpotifyTrack(artist,song) {
 
 // fetch track suggestions from echonest
 function fetchSuggestions(artist, size) {
-    console.log("fetch suggestions");
+
     // check if app is online
     if (!navigator.onLine) {
         setAutoPlay(false);
@@ -407,7 +416,7 @@ function playNext() {
     m.player.playing = false
 
     // click the first one
-    $("#results li:not(.loading).first a").click();
+    $("#results li:not(.loading).first .sp-player-button").click();
 
     // no longer paused
     paused = false;
@@ -459,6 +468,57 @@ $('#autoplay').click(function() {
 
 $("#shareButton").click(function() {
     application.showSharePopup($(this)[0],m.player.track.uri);     
-}); 
+});
 
+function suggestFromURI(uri) {
+    var track = m.Track.fromURI(uri);
+    var artist = track.data.artists[0].name;
+    console.log("fetching artist");
+    // fetch suggestions
+    fetchSuggestions(artist, 50);
+
+    $('#currentlyPlaying').addClass("user-selected");    
+    renderMainTrack(track);
+    setAutoPlay(false);
+    isTrackPlaying();
+}
+
+function noTrackPlaying() {
+
+    // error that bad boy
+    //$('#results').html("<div class='error'>"+i18n.get('noTrack')+"</div>");
+    $('body').addClass("no-track");
+}
+
+function isTrackPlaying() {
+    $('body').removeClass("no-track");    
+}
+
+// listen out for a sing being dropped on the icon
+application.observe(m.EVENT.LINKSCHANGED, function (event) {
+    var links =  sp.core.getLinks();
+    console.log(links);
+    if (links.length !== 1) return;
+    var uri = links[0];
+    if (uri.indexOf("track") > 0) {
+        suggestFromURI(uri);   
+    } else {
+        
+    }
+
+
+    //["spotify:track:43mshkHAd4Nl8TQ1CBgraX"]
+    //["spotify:artist:1GwxXgEc6oxCKQ5wykWXFs"]
+    // if track
+
+    // if artist
+    console.log(links);
+});
+
+ // overwirte default click
+$('a.sp-image').live('click', function(e) {
+    e.preventDefault();
+    window.location = $(this).parents('.cover').data("uri");
+
+})
 

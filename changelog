@@ -1,0 +1,14 @@
+v1.0.2
+
+Added meadia queries for smaller client window sizes for fixed header
+Removed fix height of body container
+Changed cover view from custom to standard views.Player
+Intercepted click event on player to show album rather than custom playlist
+Footer no longer position fixed
+Fixed href on echonest logo from " http://..." to "http://", this fixed external link icon
+Removed any console.log
+Check if ad playing
+Added BundleVersion to manifest.json
+Introduced a new welcome page
+Added ability to drop a track onto app icon
+Increased number of results returned.

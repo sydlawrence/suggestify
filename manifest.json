@@ -1,5 +1,6 @@
-{
+{        
         "BundleType": "Application",
+        "BundleVersion": "1.0.2",
         "AppIcon": {
                 "36x18": "app-icon.png"
         },
@@ -13,5 +14,8 @@
                 "http://*.echonest.com",
                 "http://*.spotify.com",
                 "http://*.twitter.com"
-        ]
+        ],
+        "AcceptedLinkTypes":[
+                "track"
+        ],
 }

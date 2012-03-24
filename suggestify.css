@@ -1,9 +1,14 @@
- body {
-    min-height:100%;
-    padding-top:50px;
+html {
+    background-color:rgb(48,48,48);
     background-image: -webkit-linear-gradient(-90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
     background-image: linear-gradient(-90deg , rgb(0,0,0) 0%, rgb(48,48,48) 100%);
+    background-attachment:fixed;
 
+}
+
+ body {
+    padding-top:50px;
+    background:transparent;
 }
 
 
@@ -36,8 +41,6 @@
 
  #results {
       padding:20px;
-      overflow:hidden;
-      max-height:460px;  
     }
 
     #results li {
@@ -56,17 +59,10 @@
     }
 
     footer {
-        position:fixed;
         width:100%;
         z-index:999;
         background:#1b1b1b;
         padding:10px 0;
-        bottom:0;  
-    }
-
-    body {
-        padding-bottom:20px;
-
     }
 
     footer div {
@@ -107,12 +103,15 @@
         background:#fff;
         border-radius:3px; 
         padding:20px;
-        margin:20px;  
+        margin:20px; 
+        margin-bottom:40px; 
         box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
         height:64px; 
         position:relative;
         top:20px;
     }
+
+    
 
     #currentlyPlaying:before {
         position:absolute;
@@ -123,6 +122,10 @@
         display:block;
         color:#fff;
         font-weight:bold;    
+    }
+
+    #currentlyPlaying.user-selected:before {
+        content: "";
     }
 
     #currentlyPlaying dl {
@@ -170,7 +173,7 @@
         padding:10px;
         margin:10px;
         border-radius:3px;
-        width:150px;
+        width:128px;
         text-decoration:none;
         -webkit-transition:background 100ms linear;
         border:1px solid transparent;
@@ -242,6 +245,7 @@
         bottom:58px;
         display:none;
         right:15px;
+        cursor: default;
         background:url(img/buttons/Medium/Play-Medium.png);
     }
 
@@ -280,7 +284,10 @@
         display:block;
         text-align:center;
     }
+#results {
+    padding-bottom:50px;
 
+}
 #results .loading {
     background:#fff;
     color:#444;
@@ -328,4 +335,215 @@
 
 #shareButton {
     float:right;
+}
+
+#echonest {
+    position:relative;
+}
+
+#echonest a:after {
+    position:absolute;
+    color:#fff;
+    top:0;
+}
+
+.error_only {
+background: #f1f1f1;
+padding: 10px;
+border-radius: 3px;
+margin: 30px;
+color: black;
+border:2px solid #ccc;
+box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
+}
+
+.tip {
+    background:#ffa;
+    border-color: #ff0;
+}
+
+.tip h1 {
+    padding-bottom:0;
+    margin-bottom:0;
+}
+
+.error_only h1 {
+    padding-left:0;
+    color:#000;
+}
+
+.error_only p {
+    margin-bottom:5px;   
+}
+
+.error_only a {
+    color:blue;
+}
+
+.error_only p:last-child {
+    margin-bottom:0;
+}
+
+#results .error {
+    margin-bottom:-70px;
+}
+
+@media all and (max-width: 810px) {
+  body {
+    padding-top:80px;
+  }
+}
+
+@media all and (max-width: 670px) {
+  body {
+    padding-top:0px;
+  }
+  header {
+      position:relative;
+  }
+}
+
+
+
+
+.no-track #currentlyPlaying {
+    display:none;
+}
+
+body .no-track {
+    display:none;
+}
+
+body.no-track .no-track {
+    display:block;
+}
+
+body.no-track #results {
+    display:none;
+}
+
+body.no-track .tip {
+    display: none;
+}
+
+#welcome_screen {
+    padding:30px;
+}
+
+#welcome_screen h1 {
+    font-size:3em;
+    text-align:center;
+    text-shadow:1px 2px 1px #ccc;
+    line-height:1.1em;
+    padding-left:0px;
+}
+
+#welcome_screen li {
+    display:block;
+    width:30%;
+    height:140px;
+    padding:20px;
+    margin:30px;
+    margin-bottom:0;
+    float:left;
+    border-radius:3px;
+    background:#fff;
+    font-size:20px;
+    color:#000;
+    line-height:25px;
+    font-weight:bold;
+    text-align:center;
+    box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
+}
+
+#welcome_screen #gremlins {
+    display:block;
+    padding:20px;
+    margin:30px;
+    margin-bottom:0;
+    border-radius:3px;
+    background:#fff;
+    font-size:20px;
+    color:#000;
+    line-height:25px;
+    font-weight:bold;
+    text-align:center;
+    box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;    
+}
+
+#welcome_screen #or {
+    text-shadow:1px 2px 1px #ccc;
+    font-size:80px;
+    font-weight:bold;
+    text-align:center;
+    padding-top:90px;
+    color:#fff;
+}
+
+#welcome_screen li:first-child {
+    float:right;
+}
+
+#welcome_screen li img, #welcome_screen #gremlins img {
+    margin-top:20px;
+    border-radius:3px;
+    box-shadow: 0 15px 10px -10px rgba(0,0,0, 0.5), 0 1px 4px rgba(0,0,0, 0.3), 0 0 40px rgba(0,0,0, 0.5) inset;
+}
+
+.no-track aside{
+    display:none;
+}
+
+@media all and (max-width: 850px) {
+    #welcome_screen #or {
+        font-size:12px;
+    }
+    #welcome_screen li img {
+        width:90%;
+    }
+}
+
+@media all and (max-width: 600px) {
+
+    
+
+    #welcome_screen li {
+        width:auto;
+        float:none !important;
+        height:auto;
+        position:relative;
+        overflow: visibile;
+    } 
+
+    #welcome_screen li:first-child {
+        margin-bottom:60px;
+    }
+
+    #welcome_screen li:first-child:after {
+        content: "Or";
+        width:100%;
+        text-align:center;
+        position:absolute;
+        left:0;
+        bottom:-40px;
+        color:#fff;
+    }
+
+     #welcome_screen li img {
+        width:60%;
+    }  
+    
+    #welcome_screen img {
+        width:90%;
+    }  
+
+    #welcome_screen #or {
+        display:none;
+    }
+}
+
+@media all and (max-width: 400px) {
+    #welcome_screen li img {
+        width:90%;
+    }
 }
